@@ -1,6 +1,6 @@
 package substituicaoDeMetodos;
 
-public class carro extends veiculo {
+public class Carro extends Veiculo {
 	public String numeroDeRodas() {
 		return "4 rodas";
 	}

@@ -1,7 +1,7 @@
 package substituicaoDeMetodos;
 
-public class veiculo {
+public class Moto extends Veiculo {
 	public String numeroDeRodas() {
-		return "Depende do veículo.";
+		return "2 rodas";
 	}
 }

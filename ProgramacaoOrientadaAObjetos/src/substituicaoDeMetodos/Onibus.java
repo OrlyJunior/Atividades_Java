@@ -1,6 +1,6 @@
 package substituicaoDeMetodos;
 
-public class onibus extends veiculo {
+public class Onibus extends Veiculo {
 	public String numeroDeRodas() {
 		return "6 rodas";
 	}

@@ -2,10 +2,10 @@ package substituicaoDeMetodos;
 
 public class Main {
 	public static void main(String[] args) {
-		veiculo veiculo = new veiculo();
-		carro carro = new carro();
-		moto moto = new moto();
-		onibus onibus = new onibus();
+		Veiculo veiculo = new Veiculo();
+		Carro carro = new Carro();
+		Moto moto = new Moto();
+		Onibus onibus = new Onibus();
 		
 		System.out.println(veiculo.numeroDeRodas());
 		System.out.println(carro.numeroDeRodas());
