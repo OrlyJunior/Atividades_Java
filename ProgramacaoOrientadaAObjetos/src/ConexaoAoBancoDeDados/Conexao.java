@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.util.Scanner;
 
-public class Conexao {
+public class Conexao extends FechaConexao {
 	public Connection get() {
 		Connection con = null;
 
@@ -42,11 +42,11 @@ public class Conexao {
 
 		Scanner inserir = new Scanner(System.in);
 
-		int idConsultar = inserir.nextInt();
-
 		String url = "jdbc:mysql://localhost:3306/testejava?user=root&password=1234561";
 
 		System.out.println("Qual o ID da categoria que deseja consultar?");
+
+		int idConsultar = inserir.nextInt();
 
 		try {
 			con = DriverManager.getConnection(url);
@@ -60,7 +60,42 @@ public class Conexao {
 			ResultSet retorno = comando.executeQuery();
 
 			if (retorno.next()) {
-				System.out.println(String.format("$d - %s", retorno.getInt("id"), retorno.getString("nome")));
+				categoria.Id = retorno.getInt("id");
+				categoria.Nome = retorno.getString("nome");
+
+				System.out.println(categoria.escrever());
+			}
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		} finally {
+			fecharConexao(con);
+		}
+
+		return categoria;
+	}
+
+	public Categoria getId(int id) {
+		Connection con = null;
+
+		Categoria categoria = new Categoria();
+
+		String url = "jdbc:mysql://localhost:3306/testejava?user=root&password=1234561";
+
+		try {
+			con = DriverManager.getConnection(url);
+
+			String cm = "select * from categoria where id = ?";
+
+			PreparedStatement comando = con.prepareStatement(cm);
+
+			comando.setInt(1, id);
+
+			ResultSet retorno = comando.executeQuery();
+
+			if (retorno.next()) {
+				categoria.Id = retorno.getInt("id");
+				categoria.Nome = retorno.getString("nome");
 			}
 
 		} catch (Exception e) {
@@ -173,14 +208,6 @@ public class Conexao {
 			System.out.println(e.getMessage());
 		} finally {
 			fecharConexao(con);
-		}
-	}
-
-	private void fecharConexao(Connection con) {
-		try {
-			con.close();
-		} catch (final Exception e) {
-			System.out.println("Impossível fechar conexão!");
 		}
 	}
 }
