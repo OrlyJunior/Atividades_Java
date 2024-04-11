@@ -44,6 +44,14 @@ public class Main {
 
 				if (operacao == 1) {
 					conProd.get();
+				} else if (operacao == 2) {
+					conProd.getId();
+				} else if (operacao == 3) {
+					conProd.post();
+				} else if (operacao == 4) {
+					conProd.delete();
+				} else if (operacao == 5) {
+					conProd.put();
 				}
 			}
 
