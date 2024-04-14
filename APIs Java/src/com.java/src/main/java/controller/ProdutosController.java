@@ -54,19 +54,161 @@ public class ProdutosController {
 				CompletableFuture<Categoria> categoria = CompletableFuture.supplyAsync(() -> {
 					return pegaCategoria.getId(produto.getCategoriaId());
 				});
-				
+
 				produto.setCateogoria(categoria.get());
 
 				produtos.add(produto);
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-			
+
 			return produtos;
 		} finally {
 			metodos.fecharConexao(con);
 		}
 
 		return produtos;
+	}
+
+	@GetMapping("/produtos/id")
+	public Produto getId(int id) {
+		Produto produto = new Produto();
+
+		Connection con = null;
+
+		String url = "jdbc:mysql://localhost:3306/testejava?user=root&password=1234561";
+
+		try {
+			con = DriverManager.getConnection(url);
+
+			String cm = "select * from produto where id = ?";
+
+			PreparedStatement comando = con.prepareStatement(cm);
+
+			comando.setInt(1, id);
+
+			ResultSet retorno = comando.executeQuery();
+
+			if (retorno.next()) {
+				produto.setId(retorno.getInt("id"));
+				produto.setDescricao(retorno.getString("descricao"));
+				produto.setQuantidade(retorno.getDouble("quantidade"));
+				produto.setUnidadeDeMedida(retorno.getString("unidadeDeMedida"));
+				produto.setCategoriaId(retorno.getInt("categoriaId"));
+
+				CompletableFuture<Categoria> categoria = CompletableFuture.supplyAsync(() -> {
+					return pegaCategoria.getId(produto.getCategoriaId());
+				});
+
+				produto.setCateogoria(categoria.get());
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+
+			return produto;
+		} finally {
+			metodos.fecharConexao(con);
+		}
+
+		return produto;
+	}
+
+	@PostMapping("/produtos")
+	public Produto post(String descricao, String unidadeDeMedida, double quantidade, int categoriaId) {
+		Produto produto = new Produto();
+
+		produto.setDescricao(descricao);
+		produto.setCategoriaId(categoriaId);
+		produto.setQuantidade(quantidade);
+		produto.setUnidadeDeMedida(unidadeDeMedida);
+
+		Connection con = null;
+
+		String url = "jdbc:mysql://localhost:3306/testejava?user=root&password=1234561";
+
+		try {
+			con = DriverManager.getConnection(url);
+
+			String cm = "insert into produto(descricao, quantidade, unidadeDeMedida, categoriaId)values(?, ?, ?, ?)";
+
+			PreparedStatement comando = con.prepareStatement(cm);
+
+			comando.setString(1, produto.getDescricao());
+			comando.setDouble(2, produto.getQuantidade());
+			comando.setString(3, produto.getUnidadeDeMedida());
+			comando.setInt(4, produto.getCategoriaId());
+
+			comando.execute();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+
+			return produto;
+		} finally {
+			metodos.fecharConexao(con);
+		}
+
+		return produto;
+	}
+
+	@PutMapping("/produtos")
+	public Produto put(String descricao, String unidadeDeMedida, double quantidade, int categoriaId, int id) {
+		Produto produto = new Produto();
+
+		produto.setDescricao(descricao);
+		produto.setCategoriaId(categoriaId);
+		produto.setQuantidade(quantidade);
+		produto.setUnidadeDeMedida(unidadeDeMedida);
+		produto.setId(id);
+
+		Connection con = null;
+
+		String url = "jdbc:mysql://localhost:3306/testejava?user=root&password=1234561";
+
+		try {
+			con = DriverManager.getConnection(url);
+
+			String cm = "update produto set descricao = ?, quantidade = ?, unidadeDeMedida = ?, categoriaId = ? where id = ?";
+
+			PreparedStatement comando = con.prepareStatement(cm);
+
+			comando.setString(1, produto.getDescricao());
+			comando.setDouble(2, produto.getQuantidade());
+			comando.setString(3, produto.getUnidadeDeMedida());
+			comando.setInt(4, produto.getCategoriaId());
+			comando.setInt(5, produto.getId());
+
+			comando.execute();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+
+			return produto;
+		} finally {
+			metodos.fecharConexao(con);
+		}
+
+		return produto;
+	}
+
+	@DeleteMapping("/produtos")
+	public void delete(int id) {
+		Connection con = null;
+
+		String url = "jdbc:mysql://localhost/testejava?user=root&password=1234561";
+
+		try {
+			con = DriverManager.getConnection(url);
+
+			String cm = "delete from produto where id = ?";
+
+			PreparedStatement comando = con.prepareStatement(cm);
+
+			comando.setInt(1, id);
+
+			comando.execute();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		} finally {
+			metodos.fecharConexao(con);
+		}
 	}
 }
