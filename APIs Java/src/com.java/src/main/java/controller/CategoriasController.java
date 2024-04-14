@@ -1,6 +1,5 @@
 package controller;
 
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,12 +17,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 @RestController
-@ComponentScan(basePackages = { "com.java", "Controllers", "Configurations, model" })
-@Api(tags = "Contorller para testes")
-public class testeController {
+@Api(tags = "CRUD de categorias")
+public class CategoriasController {
 	Metodos metodos = new Metodos();
 
-	@GetMapping
+	@GetMapping("/categorias")
 	@ApiOperation(value = "Retorna todas as categorias")
 	public ArrayList<Categoria> get() {
 		ArrayList<Categoria> categorias = new ArrayList<Categoria>();
@@ -57,12 +55,12 @@ public class testeController {
 
 		return categorias;
 	}
-	
-	@GetMapping("/id")
+
+	@GetMapping("/categorias/id")
 	@ApiOperation(value = "Retorna todas as categorias")
 	public Categoria getId(int id) {
 		Connection con = null;
-		
+
 		Categoria categoria = new Categoria();
 
 		String url = "jdbc:mysql://localhost:3306/testejava?user=root&password=1234561";
@@ -73,7 +71,7 @@ public class testeController {
 			String cm = "select * from categoria where id = ?";
 
 			PreparedStatement comando = con.prepareStatement(cm);
-			
+
 			comando.setInt(1, id);
 
 			ResultSet retorno = comando.executeQuery();
@@ -91,7 +89,7 @@ public class testeController {
 		return categoria;
 	}
 
-	@PostMapping
+	@PostMapping("/categorias")
 	@ApiOperation(value = "Adiciona categorias")
 	public Categoria post(Categoria categoria) {
 		Connection con = null;
@@ -119,7 +117,7 @@ public class testeController {
 		return categoria;
 	}
 
-	@PutMapping
+	@PutMapping("/categorias")
 	public Categoria put(Categoria categoria) {
 		Connection con = null;
 
@@ -131,10 +129,10 @@ public class testeController {
 			String cm = "update categoria set nome = ? where id = ?";
 
 			PreparedStatement comando = con.prepareStatement(cm);
-			
+
 			comando.setString(1, categoria.getNome());
 			comando.setInt(2, categoria.getId());
-			
+
 			comando.execute();
 		} catch (Exception e) {
 			return categoria;
@@ -144,7 +142,7 @@ public class testeController {
 		return categoria;
 	}
 
-	@DeleteMapping
+	@DeleteMapping("/categorias")
 	public void delete(int id) {
 		Connection con = null;
 
