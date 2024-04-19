@@ -57,7 +57,7 @@ public class CategoriasController {
 	}
 
 	@GetMapping("/categorias/id")
-	@ApiOperation(value = "Retorna todas as categorias")
+	@ApiOperation(value = "Retorna uma categoria")
 	public Categoria getId(int id) {
 		Connection con = null;
 
@@ -90,7 +90,7 @@ public class CategoriasController {
 	}
 
 	@PostMapping("/categorias")
-	@ApiOperation(value = "Adiciona categorias")
+	@ApiOperation(value = "Adiciona uma categoria na tabela")
 	public Categoria post(Categoria categoria) {
 		Connection con = null;
 
@@ -118,6 +118,7 @@ public class CategoriasController {
 	}
 
 	@PutMapping("/categorias")
+	@ApiOperation(value = "Altera uma categoria da tabela")
 	public Categoria put(Categoria categoria) {
 		Connection con = null;
 
@@ -143,6 +144,7 @@ public class CategoriasController {
 	}
 
 	@DeleteMapping("/categorias")
+	@ApiOperation(value = "Deleta uma categoria da tabela")
 	public void delete(int id) {
 		Connection con = null;
 

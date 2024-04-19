@@ -26,6 +26,7 @@ public class ProdutosController {
 	Metodos metodos = new Metodos();
 
 	@GetMapping("/produtos")
+	@ApiOperation(value = "Retorna todos os produtos")
 	public ArrayList<Produto> get() {
 		ArrayList<Produto> produtos = new ArrayList<Produto>();
 
@@ -71,6 +72,7 @@ public class ProdutosController {
 	}
 
 	@GetMapping("/produtos/id")
+	@ApiOperation(value = "Retorna um produto")
 	public Produto getId(int id) {
 		Produto produto = new Produto();
 
@@ -114,6 +116,7 @@ public class ProdutosController {
 	}
 
 	@PostMapping("/produtos")
+	@ApiOperation(value = "Insere um produto na tabela")
 	public Produto post(String descricao, String unidadeDeMedida, double quantidade, int categoriaId) {
 		Produto produto = new Produto();
 
@@ -151,6 +154,7 @@ public class ProdutosController {
 	}
 
 	@PutMapping("/produtos")
+	@ApiOperation(value = "Altera um produto da tabela")
 	public Produto put(String descricao, String unidadeDeMedida, double quantidade, int categoriaId, int id) {
 		Produto produto = new Produto();
 
@@ -190,6 +194,7 @@ public class ProdutosController {
 	}
 
 	@DeleteMapping("/produtos")
+	@ApiOperation(value = "Deleta um produto da tabela")
 	public void delete(int id) {
 		Connection con = null;
 
