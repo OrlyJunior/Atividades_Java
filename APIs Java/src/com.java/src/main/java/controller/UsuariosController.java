@@ -6,13 +6,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-
+import JWT.GeraToken;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import metodosUteis.Metodos;
@@ -22,6 +21,8 @@ import model.Usuario;
 @Api(tags = "CRUD de usuários")
 public class UsuariosController {
 	Metodos metodos = new Metodos();
+
+	GeraToken geradorDeTokens = new GeraToken();
 
 	@GetMapping("/usuarios")
 	@ApiOperation(value = "Retorna todos os usuários")
@@ -127,6 +128,46 @@ public class UsuariosController {
 		}
 
 		return usuario;
+	}
+
+	@PostMapping("/usuarios/login")
+	@ApiOperation(value = "Faz o login do usuário")
+	public String login(String user, String password) {
+		Usuario usuario = new Usuario();
+
+		Connection con = null;
+
+		String token = "";
+
+		String url = "jdbc:mysql://localhost:3306/testejava?user=root&password=1234561";
+
+		try {
+			con = DriverManager.getConnection(url);
+
+			usuario.setPassword(password);
+			usuario.setUsuario(user);
+
+			String cm = "select * from usuario where user = ? and password = ?";
+
+			PreparedStatement comando = con.prepareStatement(cm);
+
+			comando.setString(1, usuario.getUsuario());
+			comando.setString(2, usuario.getPassword());
+
+			ResultSet retorno = comando.executeQuery();
+
+			if (retorno.next()) {
+				token = geradorDeTokens.retornaToken(retorno.getString("role"));
+
+				return token;
+			}
+		} catch (Exception e) {
+			return e.getMessage();
+		} finally {
+			metodos.fecharConexao(con);
+		}
+
+		return token;
 	}
 
 	@PutMapping("/usuarios")
