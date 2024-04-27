@@ -6,7 +6,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
+
 import JWT.GeraToken;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -132,7 +137,7 @@ public class UsuariosController {
 
 	@PostMapping("/usuarios/login")
 	@ApiOperation(value = "Faz o login do usuário")
-	public String login(String user, String password) {
+	public ResponseEntity<?> login(String user, String password) {
 		Usuario usuario = new Usuario();
 
 		Connection con = null;
@@ -159,15 +164,15 @@ public class UsuariosController {
 			if (retorno.next()) {
 				token = geradorDeTokens.retornaToken(retorno.getString("role"));
 
-				return token;
+				return ResponseEntity.ok().body(Collections.singletonMap("token", token));
 			}
 		} catch (Exception e) {
-			return e.getMessage();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonMap("error", e.getMessage()));
 		} finally {
 			metodos.fecharConexao(con);
 		}
-
-		return token;
+		
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.singletonMap("erro", "Não autorizado!"));
 	}
 
 	@PutMapping("/usuarios")
