@@ -31,3 +31,7 @@ html, body{
     color: white;
     cursor: pointer;
 }
+
+#enviar:hover{
+    background-color: rgb(41, 41, 163);
+}

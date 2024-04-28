@@ -162,7 +162,7 @@ public class UsuariosController {
 			ResultSet retorno = comando.executeQuery();
 
 			if (retorno.next()) {
-				token = geradorDeTokens.retornaToken(retorno.getString("role"));
+				token = geradorDeTokens.retornaToken(retorno.getString("role"), user);
 
 				return ResponseEntity.ok().body(Collections.singletonMap("token", token));
 			}

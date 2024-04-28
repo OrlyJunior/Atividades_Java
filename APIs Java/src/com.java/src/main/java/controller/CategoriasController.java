@@ -1,5 +1,7 @@
 package controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +17,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 
 @RestController
 @Api(tags = "CRUD de categorias")
@@ -58,7 +61,7 @@ public class CategoriasController {
 
 	@GetMapping("/categorias/id")
 	@ApiOperation(value = "Retorna uma categoria")
-	public Categoria getId(int id) {
+	public ResponseEntity<?> getId(int id) {
 		Connection con = null;
 
 		Categoria categoria = new Categoria();
@@ -80,13 +83,15 @@ public class CategoriasController {
 				categoria.setId(retorno.getInt("id"));
 				categoria.setNome(retorno.getString("nome"));
 			}
+
 		} catch (Exception e) {
-			return categoria;
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(Collections.singletonMap("erro", e.getMessage()));
 		} finally {
 			metodos.fecharConexao(con);
 		}
 
-		return categoria;
+		return ResponseEntity.ok(categoria);
 	}
 
 	@PostMapping("/categorias")

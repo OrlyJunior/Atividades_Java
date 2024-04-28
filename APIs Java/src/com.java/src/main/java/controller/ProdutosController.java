@@ -1,5 +1,6 @@
 package controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,7 +54,9 @@ public class ProdutosController {
 				produto.setCategoriaId(retorno.getInt("categoriaId"));
 
 				CompletableFuture<Categoria> categoria = CompletableFuture.supplyAsync(() -> {
-					return pegaCategoria.getId(produto.getCategoriaId());
+					ResponseEntity<Categoria> categoriaEntity = (ResponseEntity<Categoria>) pegaCategoria.getId(produto.getCategoriaId());
+				
+					return categoriaEntity.getBody();
 				});
 
 				produto.setCateogoria(categoria.get());
@@ -99,9 +102,11 @@ public class ProdutosController {
 				produto.setCategoriaId(retorno.getInt("categoriaId"));
 
 				CompletableFuture<Categoria> categoria = CompletableFuture.supplyAsync(() -> {
-					return pegaCategoria.getId(produto.getCategoriaId());
+					ResponseEntity<Categoria> categoriaEntity = (ResponseEntity<Categoria>) pegaCategoria.getId(produto.getCategoriaId());
+				
+					return categoriaEntity.getBody();
 				});
-
+				
 				produto.setCateogoria(categoria.get());
 			}
 		} catch (Exception e) {

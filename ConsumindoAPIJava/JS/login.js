@@ -15,8 +15,18 @@ async function enviar(){
         body: JSON.stringify(update)
     }
 
-    fetch(`http://localhost:8080/usuarios/login?user=${update.user}&password=${update.password}`, options)
+    await fetch(`http://localhost:8080/usuarios/login?user=${update.user}&password=${update.password}`, options)
     .then(response => response.json())
-    .then(token => localStorage.setItem("token", token.token))
+    .then(token => logou(token))
     .catch(error => console.error('Erro:', error));
 }
+
+function logou(token){
+    localStorage.setItem("token", token.token);
+
+    window.location.href = "Categorias/categorias.html"
+}
+
+/*function parseJwt (token) {
+    return JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
+}*/

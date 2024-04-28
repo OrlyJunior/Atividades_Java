@@ -1,0 +1,24 @@
+body, html{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    align-items: center;
+    overflow: hidden;
+}
+
+th, td{
+    border: 1px solid black;
+    text-align: center;
+}
+
+th{
+    padding: 1.5%;
+}
+
+table, tbody, thead{
+    border-collapse: collapse;
+    width: 75%;
+    border-radius: 12px;
+}
