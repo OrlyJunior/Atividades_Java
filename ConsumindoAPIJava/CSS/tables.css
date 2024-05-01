@@ -6,6 +6,8 @@ body, html{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     align-items: center;
     overflow: hidden;
+    background-color: rgb(226, 226, 226);
+    padding: 1%;
 }
 
 th, td{
@@ -14,11 +16,35 @@ th, td{
 }
 
 th{
+    background-color: rgb(27, 35, 145);
     padding: 1.5%;
+    color: whitesmoke;
+    border: 1px solid rgb(16, 21, 88);
+    
 }
 
-table, tbody, thead{
+td{
+    padding: 0.75%;
+}
+
+table{
     border-collapse: collapse;
     width: 75%;
-    border-radius: 12px;
+}
+
+tr:nth-child(even){
+    background-color: rgb(165, 170, 235);
+}
+
+tr:nth-child(odd){
+    background-color: rgb(205, 208, 250);
+}
+
+tr:first-child{
+    box-shadow: 0px 10px 7px -8px rgba(0,0,0,0.75) inset;
+}
+
+td:nth-child(1), td:nth-child(2){
+    border-top: 0;
+    
 }
